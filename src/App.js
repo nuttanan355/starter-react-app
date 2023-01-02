@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { Routes, Route } from 'react-bootstrap';
+import axios, { AxiosHeaders } from 'axios';
+import { NavBar } from './test/components/NavBar.js';
+import { getUser } from './components/admin/getUser';
+
 
 function App() {
+  const [AllUserRole, setAllUserRole] = useState([]);
+
+
+  const getUserRole = () => {
+    axios.get('http://localhost:3030/admin/getuser').then((response) => {
+      setAllUserRole(response.data)
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={getUserRole}>getUser</button>
+      {AllUserRole.map((val, key) => {
+        return (
+          <div>
+            All : {val.AllUser}
+            <br />
+            Admin : {val.countAdmin}
+            <br />
+            User : {val.countUser}
+          </div>
+        )
+      })}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
